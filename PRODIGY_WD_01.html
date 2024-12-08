@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRODIGY_WD_01</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: yellow;
+        }
+
+        section {
+            padding: 100px 20px;
+            height: 100vh; /* Restored original height */
+        }
+
+        #home {
+            background-color: darkblue;
+            color: white; /* Ensuring text is visible on dark background */
+        }
+
+        #about {
+            background-color: yellow;
+            color: black; /* Ensuring text is visible on yellow background */
+        }
+
+        #services {
+            background-color: orange;
+            color: black; /* Ensuring text is visible on orange background */
+        }
+
+        #contact {
+            background-color: red;
+            color: white; /* Ensuring text is visible on red background */
+        }
+
+        .item-list {
+            display: none; /* Initially hidden */
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid white;
+            background-color: white; /* White background when visible */
+            color: black; /* Font color black when visible */
+        }
+
+        .button-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .food-images img {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home">
+        <h2>Home</h2>
+        <p>Welcome to the Home section.</p>
+        <div class="button-row">
+            <button onclick="toggleItems('veg-items')">Show Veg Items</button>
+            <button onclick="toggleItems('nonveg-items')">Show Non-Veg Items</button>
+            <button onclick="toggleItems('chinese-items')">Show Chinese Items</button>
+            <button onclick="toggleItems('south-items')">Show South Indian Items</button>
+        </div>
+        <div id="veg-items" class="item-list">
+            <ul>
+                <li>Salad</li>
+                <li>Vegetable Curry</li>
+                <li>Paneer Tikka</li>
+                <li>Mixed Veg</li>
+            </ul>
+        </div>
+        <div id="nonveg-items" class="item-list">
+            <ul>
+                <li>Chicken Curry</li>
+                <li>Fish Fry</li>
+                <li>Mutton Biryani</li>
+                <li>Chicken Tikka</li>
+            </ul>
+        </div>
+        <div id="chinese-items" class="item-list">
+            <ul>
+                <li>Chow Mein</li>
+                <li>Spring Rolls</li>
+                <li>Szechuan Chicken</li>
+                <li>Sweet and Sour Pork</li>
+            </ul>
+        </div>
+        <div id="south-items" class="item-list">
+            <ul>
+                <li>Dosa</li>
+                <li>Idli</li>
+                <li>Vada</li>
+                <li>Appam</li>
+            </ul>
+        </div>
+    </section>
+    <section id="about">
+        <h2>About</h2>
+        <p>Welcome to Live to Eat Cafe! Established in 2010, our cafe has been serving a variety of delicious cuisines that cater to diverse tastes. From our humble beginnings as a small eatery, we've grown into a beloved community hub known for our delectable dishes and warm, inviting atmosphere. Whether you're in the mood for traditional Indian cuisine, exotic Chinese flavors, or hearty Continental fare, we have something for everyone.</p>
+        <p>Join us and experience the taste of our signature dishes that have become favorites among our customers. Our commitment to quality ingredients and exceptional service ensures that every visit to Live to Eat Cafe is a delightful experience.</p>
+        <div class="food-images">
+            <img src="path/to/food1.jpg" alt="Delicious Dish 1">
+            <img src="path/to/food2.jpg" alt="Delicious Dish 2">
+            <img src="path/to/food3.jpg" alt="Delicious Dish 3">
+            <img src="path/to/food4.jpg" alt="Delicious Dish 4">
+        </div>
+    </section>
+    <section id="services">
+        <h2>Services</h2>
+        <p>Enjoy our dining services:</p>
+        <ul>
+            <li>**Dine-In**: Enjoy your meal in our cozy and welcoming cafe environment.</li> 
+            <li>**Takeaway**: Order your favorite dishes for takeaway and enjoy them at home.</li> 
+            <li>**Online Ordering**: Order through <a href="https://www.zomato.com" target="_blank">Zomato</a> or <a href="https://www.swiggy.com" target="_blank">Swiggy</a> for convenient delivery to your doorstep.</li> 
+            <li>**On-Call Delivery**: Call us directly to place your order for delivery. Free delivery on orders above ₹2000.</li>
+        </ul>
+    </section>
+    <section id="contact">
+        <h2>Contact</h2>
+        <p>Reach us at our cafe or call us for more information.</p>
+        <p>Phone -- 9190******</p>
+        <p>Mail ID -- livetoeatcafe@gmail.com</p>
+    </section>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.style.backgroundColor = 'rgba(51, 51, 51, 0.9)';
+            } else {
+                navbar.style.backgroundColor = '#333';
+            }
+        });
+
+        function toggleItems(id) {
+            const element = document.getElementById(id);
+            if (element.style.display === 'none' || element.style.display === '') {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
