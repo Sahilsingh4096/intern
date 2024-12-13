@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background-color: #d3e0ea;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background-color: white;
+            border: 2px solid #333;
+            cursor: pointer;
+        }
+        .cell:hover {
+            background-color: #e0e0e0;
+        }
+        .winner {
+            color: green;
+        }
+        .reset {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .turn {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .scores {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic-Tac-Toe</h1>
+    <div class="turn" id="turn"></div>
+    <select id="gameMode">
+        <option value="person">Two Players</option>
+        <option value="ai">Play Against Computer</option>
+    </select>
+    <div class="board" id="board"></div>
+    <button class="reset" id="reset">Reset Game</button>
+    <div class="scores">
+        <p>Player X: <span id="scoreX">0</span></p>
+        <p>Player O: <span id="scoreO">0</span></p>
+    </div>
+    <script>
+        const boardElement = document.getElementById('board');
+        const resetButton = document.getElementById('reset');
+        const turnElement = document.getElementById('turn');
+        const gameModeSelect = document.getElementById('gameMode');
+        const scoreXElement = document.getElementById('scoreX');
+        const scoreOElement = document.getElementById('scoreO');
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+        let gameActive = true;
+        let scores = { X: 0, O: 0 };
+
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        function createBoard() {
+            boardElement.innerHTML = '';
+            board.forEach((cell, index) => {
+                const cellElement = document.createElement('div');
+                cellElement.classList.add('cell');
+                cellElement.textContent = cell;
+                cellElement.addEventListener('click', () => handleCellClick(index));
+                boardElement.appendChild(cellElement);
+            });
+        }
+
+        function handleCellClick(index) {
+            if (board[index] !== '' || !gameActive) {
+                return;
+            }
+            board[index] = currentPlayer;
+            checkWinner();
+            const gameMode = gameModeSelect.value;
+            if (gameMode === 'person') {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            } else if (gameMode === 'ai' && currentPlayer === 'X') {
+                setTimeout(aiMove, 500); // Shorter delay for better UX
+            }
+            createBoard();
+            updateTurn();
+        }
+
+        function aiMove() {
+            const emptyCells = board.map((cell, index) => [cell, index]).filter(([cell]) => cell === '');
+            const randomIndex = Math.floor(Math.random() * emptyCells.length);
+            const [cell, index] = emptyCells[randomIndex];
+            board[index] = 'O';
+            checkWinner();
+            currentPlayer = 'X';
+            createBoard();
+            updateTurn();
+        }
+
+        function checkWinner() {
+            for (let condition of winningConditions) {
+                const [a, b, c] = condition;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    gameActive = false;
+                    alert(`Player ${board[a]} wins!`);
+                    updateScore(board[a]);
+                    return;
+                }
+            }
+            if (!board.includes('')) {
+                gameActive = false;
+                alert("It's a draw!");
+            }
+        }
+
+        function updateScore(winner) {
+            scores[winner]++;
+            scoreXElement.textContent = scores.X;
+            scoreOElement.textContent = scores.O;
+        }
+
+        function updateTurn() {
+            if (gameActive) {
+                turnElement.textContent = `Turn: Player ${currentPlayer}`;
+            } else {
+                turnElement.textContent = 'Game Over';
+            }
+        }
+
+        resetButton.addEventListener('click', () => {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameActive = true;
+            createBoard();
+            updateTurn();
+        });
+
+        createBoard();
+        updateTurn();
+    </script>
+</body>
+</html>
