@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multi Stopwatch</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            margin-top: 20px;
+        }
+        .stopwatch {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            color: white; /* Text color for better contrast */
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .lap-times {
+            margin-top: 10px;
+            text-align: left;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <button id="add-stopwatch">➕ Add Stopwatch</button>
+    <script>
+        let stopwatchCount = 0;
+
+        // Array of colors for different stopwatches
+        const colors = [
+            '#FF5733', // Red
+            '#33FF57', // Green
+            '#3357FF', // Blue
+            '#FF33A1', // Pink
+            '#FFB833', // Orange
+            '#33FFF5', // Cyan
+            '#A133FF', // Purple
+            '#FF3333', // Light Red
+            '#33FF33', // Light Green
+            '#3333FF'  // Light Blue
+        ];
+
+        function createStopwatch() {
+            const currentStopwatchCount = stopwatchCount; // Capture the current count
+            const stopwatch = document.createElement('div');
+            stopwatch.className = 'stopwatch';
+            stopwatch.style.backgroundColor = colors[stopwatchCount % colors.length]; // Assign a color
+            stopwatch.innerHTML = `
+                <h1 id="time-${currentStopwatchCount}">00:00:00</h1>
+                <button id="start-${currentStopwatchCount}">Start</button>
+                <button id="pause-${currentStopwatchCount}">Pause</button>
+                <button id="reset-${currentStopwatchCount}">Reset</button>
+                <button id="lap-${currentStopwatchCount}">Lap</button>
+                <div class="lap-times" id="laps-${currentStopwatchCount}"></div>
+            `;
+            document.getElementById('container').appendChild(stopwatch);
+
+            let timer;
+            let isRunning = false;
+            let [hours, minutes, seconds] = [0, 0, 0];
+
+            function updateTime() {
+                seconds++;
+                if (seconds === 60) {
+                    minutes++;
+                    seconds = 0;
+                }
+                if (minutes === 60) {
+                    hours++;
+                    minutes = 0;
+                }
+                document.getElementById(`time-${currentStopwatchCount}`).textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+
+            document.getElementById(`start-${currentStopwatchCount}`).addEventListener('click', () => {
+                if (!isRunning) {
+                    timer = setInterval(updateTime, 1000);
+                    isRunning = true;
+                }
+            });
+
+            document.getElementById(`pause-${currentStopwatchCount}`).addEventListener('click', () => {
+                clearInterval(timer);
+                isRunning = false;
+            });
+
+            document.getElementById(`reset-${currentStopwatchCount}`).addEventListener('click', () => {
+                clearInterval(timer);
+                isRunning = false;
+                [hours, minutes, seconds] = [0, 0, 0];
+                document.getElementById(`time-${currentStopwatchCount}`).textContent = "00:00:00";
+                document.getElementById(`laps-${currentStopwatchCount}`).innerHTML = ""; // Clear lap times
+            });
+
+            document.getElementById(`lap-${currentStopwatchCount}`).addEventListener('click', () => {
+                if (isRunning) {
+                    const lapTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                    const lapDiv = document.createElement('div');
+                    lapDiv.textContent = `Lap: ${lapTime}`;
+                    document.getElementById(`laps-${currentStopwatchCount}`).appendChild(lapDiv);
+                }
+            });
+
+            stopwatchCount++;
+        }
+
+        document.getElementById('add-stopwatch').addEventListener('click', createStopwatch);
+    </script>
+</body>
+</html>
