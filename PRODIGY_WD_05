@@ -59,7 +59,7 @@
         <div id="weatherData"></div>
     </div>
     <script>
-        const apiKey = '3abe1ca238a26a66375218d582a72e01'; // Your OpenWeatherMap API key
+        const apiKey = ; // Your OpenWeatherMap API key
 
         function fetchWeatherByLocation() {
             const location = document.getElementById('locationInput').value;
