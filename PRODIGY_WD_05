@@ -62,7 +62,7 @@
         const apiKey = ; // Your OpenWeatherMap API key
 
         function fetchWeatherByLocation() {
-            const location = document.getElementById('locationInput').value;
+            const location = document.getEut').value;
             if (!location) {
                 alert('Please enter a location');
                 return;
