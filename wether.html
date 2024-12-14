@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        #app {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #weatherData {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Weather App</h1>
+        <div>
+            <input type="text" id="locationInput" placeholder="Enter location">
+            <button onclick="fetchWeatherByLocation()">Get Weather</button>
+        </div>
+        <div id="weatherData"></div>
+    </div>
+    <script>
+        const apiKey = '3abe1ca238a26a66375218d582a72e01'; // Your OpenWeatherMap API key
+
+        function fetchWeatherByLocation() {
+            const location = document.getElementById('locationInput').value;
+            if (!location) {
+                alert('Please enter a location');
+                return;
+            }
+
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cod !== 200) {
+                        alert(data.message);
+                        return;
+                    }
+
+                    displayWeather(data);
+                })
+                .catch(error => {
+                    alert('Error fetching weather data');
+                    console.error(error);
+                });
+        }
+
+        function displayWeather(data) {
+            const weatherData = `
+                <h2>Weather in ${data.name}</h2>
+                <p>Temperature: ${data.main.temp}°C</p>
+                <p>Conditions: ${data.weather[0].description}</p>
+                <p>Humidity: ${data.main.humidity}%</p>
+                <p>Wind Speed: ${data.wind.speed} m/s</p>
+            `;
+            document.getElementById('weatherData').innerHTML = weatherData;
+        }
+    </script>
+</body>
+</html>
